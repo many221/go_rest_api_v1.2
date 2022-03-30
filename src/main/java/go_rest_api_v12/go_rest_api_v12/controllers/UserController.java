@@ -133,13 +133,20 @@ public class UserController {
 
         try {
 
+            String token = env.getProperty ( "GO_REST_API_KEY" );
+
+            HttpHeaders headers = new HttpHeaders ();
+
+            headers.setBearerAuth ( token );
+
+
             String userUrl = URL + "/"+ id;
 
-            HttpEntity<UserModel> request = new HttpEntity<> ( updateData );
+            HttpEntity<UserModel> request = new HttpEntity<> ( updateData,headers );
 
             ResponseEntity<UserModel> response =  restTemplate.exchange ( userUrl, HttpMethod.PUT,request,UserModel.class );
 
-            return new ResponseEntity<UserModel>(response.getBody (),HttpStatus.OK);
+            return new ResponseEntity<>(response.getBody (),HttpStatus.OK);
 
         } catch (Exception e){
 
@@ -154,13 +161,20 @@ public class UserController {
     //X--> Delete Requests
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<UserModel> deleteUser(@PathVariable int id, RestTemplate restTemplate){
+    public HttpStatus deleteUser(@PathVariable int id, RestTemplate restTemplate){
 
         try {
 
-            String deletedUser = URL +"/"+id;
+            String token = env.getProperty ( "GO_REST_API_KEY" );
 
-            return restTemplate.delete ( deletedUser,UserModel.class );
+            String postURl = URL + "?access-token=" + token;
+
+            String deletedUser = postURl +"/"+id;
+
+            restTemplate.delete ( deletedUser );
+
+//            return restTemplate.delete ( deletedUser,UserModel.class );
+            return HttpStatus.OK;
 
         } catch (Exception e){
 
@@ -168,7 +182,7 @@ public class UserController {
 
             System.out.println (e.getMessage ());
 
-            return new ResponseEntity( e.getMessage (), HttpStatus.INTERNAL_SERVER_ERROR );
+            return HttpStatus.INTERNAL_SERVER_ERROR;
 
         }
 
