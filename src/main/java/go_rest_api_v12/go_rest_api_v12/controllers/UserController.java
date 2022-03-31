@@ -4,6 +4,7 @@ import go_rest_api_v12.go_rest_api_v12.models.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.*;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -161,7 +162,7 @@ public class UserController {
     //X--> Delete Requests
 
     @DeleteMapping("/{id}")
-    public HttpStatus deleteUser(@PathVariable int id, RestTemplate restTemplate){
+    public ResponseEntity<UserModel>deleteUser(@PathVariable int id, RestTemplate restTemplate){
 
         try {
 
@@ -171,10 +172,12 @@ public class UserController {
 
             String deletedUser = postURl +"/"+id;
 
-            restTemplate.delete ( deletedUser );
+            ResponseEntity response = getUserByID ( id,restTemplate );
+
+            restTemplate.delete ( deletedUser,UserModel.class );
 
 //            return restTemplate.delete ( deletedUser,UserModel.class );
-            return HttpStatus.OK;
+            return new ResponseEntity<UserModel> ( (MultiValueMap<String, String>) response,HttpStatus.I_AM_A_TEAPOT );
 
         } catch (Exception e){
 
@@ -182,7 +185,7 @@ public class UserController {
 
             System.out.println (e.getMessage ());
 
-            return HttpStatus.INTERNAL_SERVER_ERROR;
+            return new ResponseEntity( e.getMessage (), HttpStatus.INTERNAL_SERVER_ERROR );
 
         }
 
