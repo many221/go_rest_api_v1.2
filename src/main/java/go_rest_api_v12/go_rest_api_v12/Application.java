@@ -12,7 +12,7 @@ public class Application {
 
 	/*
 
-	Create a controller and model for each of the following resources
+Create a controller and model for each of the following resources
 posts - https://gorest.co.in/public/v2/posts
 comments -  https://gorest.co.in/public/v2/comments
 todos - https://gorest.co.in/public/v2/todos
