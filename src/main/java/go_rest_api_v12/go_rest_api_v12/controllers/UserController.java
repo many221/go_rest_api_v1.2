@@ -162,34 +162,26 @@ public class UserController {
     //X--> Delete Requests
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<UserModel>deleteUser(@PathVariable int id, RestTemplate restTemplate){
+    public ResponseEntity<?>deleteUser(@PathVariable int id, RestTemplate restTemplate) {
 
         try {
 
             String token = env.getProperty ( "GO_REST_API_KEY" );
 
-            String postURl = URL + "?access-token=" + token;
+            String url = URL + "/" + id + "?access-token=" + token;
 
-            String deletedUser = postURl +"/"+id;
+            UserModel userToDelete = restTemplate.getForObject ( url, UserModel.class );
 
-            ResponseEntity response = getUserByID ( id,restTemplate );
+            restTemplate.delete ( url );
 
-            restTemplate.delete ( deletedUser,UserModel.class );
+            return new ResponseEntity<String> ( userToDelete.getName () + " has been deleted", HttpStatus.I_AM_A_TEAPOT );
 
-//            return restTemplate.delete ( deletedUser,UserModel.class );
-            return new ResponseEntity<UserModel> ( (MultiValueMap<String, String>) response,HttpStatus.I_AM_A_TEAPOT );
+        } catch (Exception e) {
 
-        } catch (Exception e){
-
-            System.out.println (e.getClass ());
-
-            System.out.println (e.getMessage ());
-
-            return new ResponseEntity( e.getMessage (), HttpStatus.INTERNAL_SERVER_ERROR );
+            System.out.println ( e.getClass () );
+            return new ResponseEntity<> ( e.getMessage (), HttpStatus.INTERNAL_SERVER_ERROR );
 
         }
-
     }
-
 
 }
