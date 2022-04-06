@@ -49,7 +49,7 @@ public class CommentController {
 
         } catch (HttpClientErrorException.Unauthorized exception){
 
-            return new ResponseEntity ( "You Are Not Authorized To Create A User", HttpStatus.UNAUTHORIZED );
+            return new ResponseEntity ( "You Are Not Authorized To Create A Comment", HttpStatus.UNAUTHORIZED );
 
         } catch (Exception e){
 
@@ -64,7 +64,7 @@ public class CommentController {
 
     //O> READ
 
-    @GetMapping("/firstPage")
+    @GetMapping
     public CommentModel[] getFirstPage(RestTemplate restTemplate){
 
         return restTemplate.getForObject ( COMMMENT_URL,CommentModel[].class );
@@ -79,6 +79,10 @@ public class CommentController {
             String url = POST_URL + "/" + postId + "/comments";
 
             return new ResponseEntity<CommentModel[]> (restTemplate.getForObject ( url,CommentModel[].class ),HttpStatus.OK  );
+
+        } catch (HttpClientErrorException.NotFound exception) {
+
+            return new ResponseEntity(  "Comments on Post #" + postId + " cannot be found",HttpStatus.NOT_FOUND);
 
         } catch (Exception e){
 

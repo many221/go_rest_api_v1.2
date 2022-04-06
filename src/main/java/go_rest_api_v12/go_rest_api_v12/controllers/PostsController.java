@@ -44,7 +44,7 @@ public class PostsController {
 
         } catch (HttpClientErrorException.Unauthorized exception){
 
-            return new ResponseEntity ( "You Are Not Authorized To Create A User", HttpStatus.UNAUTHORIZED );
+            return new ResponseEntity ( "You Are Not Authorized To Create A Post", HttpStatus.UNAUTHORIZED );
 
         } catch (Exception e){
 
@@ -57,7 +57,7 @@ public class PostsController {
     }
 
     //O> Read
-    @GetMapping("/firstpage")
+    @GetMapping
     public PostsModel[] getFirstPage(RestTemplate restTemplate) {
 
             return restTemplate.getForObject ( POST_URL, PostsModel[].class );
@@ -72,7 +72,11 @@ public class PostsController {
 
             return new ResponseEntity<> ( restTemplate.getForObject ( url, PostsModel[].class ), HttpStatus.OK );
 
-        } catch (Exception exception){
+        } catch (HttpClientErrorException.NotFound exception) {
+
+            return new ResponseEntity(  "Post #" + id + " does not exist",HttpStatus.NOT_FOUND);
+
+        }catch (Exception exception){
 
             System.out.println (exception.getMessage ());
 

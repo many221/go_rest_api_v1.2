@@ -1,21 +1,21 @@
 package go_rest_api_v12.go_rest_api_v12.models;
 
-import java.util.Date;
-
 public class TodoModel {
 
     private int id;
-    private int userId;
+    private int user_id;
     private String title;
-    private Date dueDate;
+
+    private String due_on;
+
     private String status;
 
     public TodoModel() {
     }
 
-    public TodoModel(String title, Date dueDate, String status) {
+    public TodoModel(String title, String dueDate, String status) {
         this.title = title;
-        this.dueDate = dueDate;
+        this.due_on = dueDate;
         this.status = status;
     }
 
@@ -23,16 +23,16 @@ public class TodoModel {
         return id;
     }
 
-    public int getUserId() {
-        return userId;
+    public int getUser_id() {
+        return user_id;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public Date getDueDate() {
-        return dueDate;
+    public String getDue_on() {
+        return due_on;
     }
 
     public String getStatus() {
@@ -43,9 +43,9 @@ public class TodoModel {
     public String toString() {
         return "TodoModel{" +
                 "id=" + id +
-                ", userId=" + userId +
+                ", userId=" + user_id +
                 ", title='" + title + '\'' +
-                ", dueDate=" + dueDate +
+                ", dueDate=" + due_on +
                 ", status='" + status + '\'' +
                 '}';
     }
