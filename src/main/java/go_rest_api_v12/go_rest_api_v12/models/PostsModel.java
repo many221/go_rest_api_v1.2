@@ -3,7 +3,8 @@ package go_rest_api_v12.go_rest_api_v12.models;
 public class PostsModel {
 
     private int id;
-    private int userId;
+    private int user_id;
+
     private String title;
     private String body;
 
@@ -19,8 +20,8 @@ public class PostsModel {
         return id;
     }
 
-    public int getUserId() {
-        return userId;
+    public int getUser_id() {
+        return user_id;
     }
 
     public String getTitle() {
@@ -35,7 +36,7 @@ public class PostsModel {
     public String toString() {
         return "PostsModel{" +
                 "id=" + id +
-                ", userId=" + userId +
+                ", userId=" + user_id +
                 ", title='" + title + '\'' +
                 ", body='" + body + '\'' +
                 '}';
